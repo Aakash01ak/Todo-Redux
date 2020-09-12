@@ -17,6 +17,7 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true , useUnifiedTop
 
 // Middlewares     
 app.use("/api/todos", require("./routes/todos"))
+app.use("/api/auth", require("./routes/auth"))
 
 const PORT = process.env.PORT || 5000;
 

@@ -14,6 +14,12 @@ class TodoList extends Component {
             isCompleted: false
         }
     }
+
+    static propTypes = {
+        getItems: PropTypes.func.isRequired,
+        item: PropTypes.object.isRequired,
+        isAuthenticated: PropTypes.bool
+      };
        
     componentDidMount(){
 
@@ -49,6 +55,7 @@ class TodoList extends Component {
         const { todos } = this.props.todo;
         return (
             <div>
+                {this.props.isAuthenticated ? (
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                     <Input type="text" name="name" value={this.state.name} onChange={this.handleChange} placeholder="Enter a todo"/>
@@ -60,6 +67,7 @@ class TodoList extends Component {
                     block
                     >Submit</Button>
                 </Form>
+                ) : <h4 className='mb-3 ml-4'>Please Log In To Manage Todos</h4>}
 
                     <ListGroup className="mt-5">
                     <TransitionGroup>
@@ -67,6 +75,7 @@ class TodoList extends Component {
                             todos.map(({ _id, name, isCompleted }) => (
                             <CSSTransition key={_id} timeout={500} classNames="my-node">
                                 <ListGroupItem  >
+                                {this.props.isAuthenticated ? (
                                 <Button
                                 className="btn2" 
                                 color="danger"
@@ -75,7 +84,10 @@ class TodoList extends Component {
                                             this.onDeleteClick.bind(this, _id)
                                 }
                                 >&times;
-                                </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </Button>
+                                ) : null}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {this.props.isAuthenticated ? (
                                 <Input
                                 type="checkbox"
                                 name="isCompleted"
@@ -84,7 +96,9 @@ class TodoList extends Component {
                                 onClick={ 
                                             this.onCompleteClick.bind(this, _id, isCompleted)
                                 }
-                                ></Input>&nbsp;&nbsp;&nbsp;&nbsp;
+                                ></Input>
+                                ) : null}
+                                &nbsp;&nbsp;&nbsp;&nbsp;
                                     <div style={{textDecoration: isCompleted ? "line-through" : "", display:"inline"}}>{name}</div>
                                 </ListGroupItem>
                             </CSSTransition>
@@ -100,16 +114,10 @@ class TodoList extends Component {
     }
 }
 
-TodoList.propTypes = {
-    getTodos: PropTypes.func.isRequired,
-    addTodo: PropTypes.func.isRequired,
-    deleteTodo: PropTypes.func.isRequired,
-    completedTodo: PropTypes.func.isRequired,
-    todo: PropTypes.object
-}
 
 const mapStateToProps = (state) => ({
-    todo: state.todo
+    todo: state.todo,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps, { getTodos, deleteTodo, addTodo, completedTodo })(TodoList); 

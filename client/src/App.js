@@ -14,8 +14,15 @@ import {
 
 import { Provider } from 'react-redux'
 import store from './redux/store'
+import { loadUser } from './redux/actions/authActions';
 
-function App() {
+class App extends React.Component  {
+
+  componentDidMount() {
+    store.dispatch(loadUser());
+  }
+
+  render(){
   return (
     <div>
       <Provider store={store}>
@@ -32,6 +39,7 @@ function App() {
         </Provider>
     </div>
   );
+  }
 }
 
 export default App;
