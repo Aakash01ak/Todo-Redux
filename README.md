@@ -1,5 +1,5 @@
 # MERN-To-Do-App
-Add your MONGO_URI to a .env file with name DB_CONNECT
+Add your MONGO_URI & TokenSecret to a .env file with name DB_CONNECT & TOKEN_SECRET respectively.
 
 #### Install dependencies for server
 npm install
